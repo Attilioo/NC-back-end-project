@@ -31,6 +31,25 @@ describe("Test /api/topics", () => {
         expect(typeof response.body[2].slug).toBe("string");
       });
   });
+});
 
- 
+describe("Test /api", () => {
+  test("should return a list of the apis available", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body);
+        expect(body.hasOwnProperty("GET /api")).toBe(true);
+        expect(body.hasOwnProperty("GET /api/topics")).toBe(true);
+        expect(body.hasOwnProperty("GET /api/articles")).toBe(true);
+        expect(body.hasOwnProperty("GET /api/comments")).toBe(true);
+        expect(body.hasOwnProperty("GET /api/users")).toBe(true);
+
+        expect(body["GET /api"].hasOwnProperty("description"));
+        expect(body["GET /api/topics"].hasOwnProperty("description"));
+        expect(body["GET /api/topics"].hasOwnProperty("queries"));
+        expect(body["GET /api/topics"].hasOwnProperty("exampleResponse"));
+      });
+  });
 });

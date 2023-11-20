@@ -25,5 +25,27 @@
         }
       ]
     }
+  },
+  "GET /api/comments": {
+    "description": "serves an array of all comments in the database",
+    "queries": ["author", "order", "sort_by", "votes"],
+    "exampleResponse": {
+      "comments": [
+        {
+          "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+          "votes": 16,
+          "author": "butter_bridge",
+          "article_id": 9,
+          "created_at": 1586179020000
+        }
+      ]
+    }
+  },
+  "GET /api/users": {
+    "description": "Gives an array of all users in the db",
+    "queries": ["username", "name", "order"],
+    "exampleResponse": {
+      "topics": [{ "slug": "football", "description": "Footie!" }]
+    }
   }
 }
