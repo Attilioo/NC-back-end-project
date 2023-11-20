@@ -1,11 +1,19 @@
-const format = require("pg-format");
-
 const db = require("../db/connection");
 
 exports.selectTopics = () => {
-  console.log("FROM THE MODEL");
+  let queryString = "SELECT * FROM topics";
+  const extraQueries = [];
 
-  return db.query("SELECT * FROM topics").then(({ rows }) => {
-    return rows;
-  });
+  return db
+    .query(queryString, extraQueries)
+    .then(({ rows }) => {
+      return rows;
+    })
+    .catch((err) => {
+      console.log(err);
+      return Promise.reject({
+        status: 400,
+        msg: "Wrong Input",
+      });
+    });
 };

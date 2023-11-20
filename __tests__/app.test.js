@@ -15,9 +15,24 @@ describe("Test /api/topics", () => {
       .get("/api/topics")
       .expect(200)
       .then((response) => {
-        console.log(response.body);
+        expect(response.body.length).toBe(3);
+      });
+  });
+  test("GET 200: Each item in the array of topics should have a string 'Description' and a string 'slug'", () => {
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then((response) => {
         expect(typeof response.body[0].description).toBe("string");
         expect(typeof response.body[0].slug).toBe("string");
+        expect(typeof response.body[1].description).toBe("string");
+        expect(typeof response.body[1].slug).toBe("string");
+        expect(typeof response.body[2].description).toBe("string");
+        expect(typeof response.body[2].slug).toBe("string");
       });
+  });
+
+  test("GET: 404 , the url is misstyped", () => {
+    return request(app).get("/api/topic").expect(404);
   });
 });
