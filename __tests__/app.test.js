@@ -2,8 +2,9 @@ const app = require("../app");
 const request = require("supertest");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
-
 const data = require("../db/data/test-data/");
+
+const endpoints = require("../endpoints.json");
 
 beforeEach(() => seed(data));
 
@@ -39,17 +40,7 @@ describe("Test /api", () => {
       .get("/api")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
-        expect(body.hasOwnProperty("GET /api")).toBe(true);
-        expect(body.hasOwnProperty("GET /api/topics")).toBe(true);
-        expect(body.hasOwnProperty("GET /api/articles")).toBe(true);
-        expect(body.hasOwnProperty("GET /api/comments")).toBe(true);
-        expect(body.hasOwnProperty("GET /api/users")).toBe(true);
-
-        expect(body["GET /api"].hasOwnProperty("description"));
-        expect(body["GET /api/topics"].hasOwnProperty("description"));
-        expect(body["GET /api/topics"].hasOwnProperty("queries"));
-        expect(body["GET /api/topics"].hasOwnProperty("exampleResponse"));
+        expect(body).toEqual(endpoints);
       });
   });
 });
