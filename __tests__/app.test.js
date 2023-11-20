@@ -32,7 +32,9 @@ describe("Test /api/topics", () => {
       });
   });
 
-  test("GET: 404 , the url is misstyped", () => {
+  test("ERROR: 404 , the url is misstyped", () => {
     return request(app).get("/api/topic").expect(404);
   });
+
+ 
 });
