@@ -73,4 +73,12 @@ describe("Test /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad Request");
       });
   });
+  test("the method blocks an invalid id", () => {
+    return request(app)
+      .get("/api/articles/an-invalid_id")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
 });
