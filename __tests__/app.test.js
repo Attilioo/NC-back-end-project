@@ -87,15 +87,16 @@ describe("TEST /api/articles", () => {
       .expect(200)
       .then(({ body }) => {
         body.forEach((article) => {
-          expect(typeof article).toBe("object");
-          expect(article.hasOwnProperty("author")).toBe(true);
-          expect(article.hasOwnProperty("title")).toBe(true);
-          expect(article.hasOwnProperty("article_id")).toBe(true);
-          expect(article.hasOwnProperty("topic")).toBe(true);
-          expect(article.hasOwnProperty("created_at")).toBe(true);
-          expect(article.hasOwnProperty("votes")).toBe(true);
-          expect(article.hasOwnProperty("article_img_url")).toBe(true);
-          expect(article.hasOwnProperty("comment_count")).toBe(true);
+          expect(article).toMatchObject({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: expect.any(Number),
+            topic: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(String),
+          });
         });
       });
   });
