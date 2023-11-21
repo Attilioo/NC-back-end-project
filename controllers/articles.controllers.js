@@ -10,3 +10,6 @@ exports.getArticlebyId = (req, res, next) => {
       next(err);
     });
 };
+
+
+exports.getArticles

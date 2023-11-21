@@ -51,14 +51,11 @@ describe("Test /api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then(({ body }) => {
-        expect(body.hasOwnProperty("author"));
-        expect(body.hasOwnProperty("title"));
-        expect(body.hasOwnProperty("article_id"));
-        expect(body.hasOwnProperty("body"));
-        expect(body.hasOwnProperty("topic"));
-        expect(body.hasOwnProperty("created_at"));
-        expect(body.hasOwnProperty("votes"));
-        expect(body.hasOwnProperty("article_img_url"));
+        expect(body[0].article_id).toBe(1)
+        expect(body[0].title).toBe('Living in the shadow of a great man')
+        expect(body[0].topic).toBe('mitch')
+        expect(body[0].author).toBe('butter_bridge')
+        expect(body[0].votes).toBe(100)
       });
   });
   test("the method blocks SQL injections", () => {
@@ -82,3 +79,5 @@ describe("Test /api/articles/:article_id", () => {
       });
   });
 });
+
+

@@ -13,10 +13,4 @@ exports.selectArticleById = (article_id) => {
       }
       return rows;
     })
-    .catch((err) => {
-      return Promise.reject({
-        status: 400,
-        msg: "Bad Request",
-      });
-    });
 };

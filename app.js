@@ -11,6 +11,7 @@ app.get("/api", getApi);
 
 app.get("/api/articles/:article_id", getArticlebyId);
 
+
 const handlePsqlErrors = (err, req, res, next) => {
   if (err.code === "22P02") {
     res.status(400).send({ msg: "Bad request" });
