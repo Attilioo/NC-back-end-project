@@ -5,6 +5,7 @@ const {
   getArticlebyId,
   getArticles,
 } = require("./controllers/articles.controllers");
+const { getCommentsByArticleId } = require("./controllers/comments.controller");
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.get("/api", getApi);
 app.get("/api/articles/:article_id", getArticlebyId);
 
 app.get("/api/articles", getArticles);
+
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
 const handlePsqlErrors = (err, req, res, next) => {
   if (err.code === "22P02") {
