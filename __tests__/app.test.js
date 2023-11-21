@@ -51,11 +51,11 @@ describe("Test /api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then(({ body }) => {
-        expect(body[0].article_id).toBe(1)
-        expect(body[0].title).toBe('Living in the shadow of a great man')
-        expect(body[0].topic).toBe('mitch')
-        expect(body[0].author).toBe('butter_bridge')
-        expect(body[0].votes).toBe(100)
+        expect(body[0].article_id).toBe(1);
+        expect(body[0].title).toBe("Living in the shadow of a great man");
+        expect(body[0].topic).toBe("mitch");
+        expect(body[0].author).toBe("butter_bridge");
+        expect(body[0].votes).toBe(100);
       });
   });
   test("the method blocks SQL injections", () => {
@@ -80,4 +80,23 @@ describe("Test /api/articles/:article_id", () => {
   });
 });
 
-
+describe("TEST /api/articles", () => {
+  test("GET 200 Should return an array of articles", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        body.forEach((article) => {
+          expect(typeof article).toBe("object");
+          expect(article.hasOwnProperty("author")).toBe(true);
+          expect(article.hasOwnProperty("title")).toBe(true);
+          expect(article.hasOwnProperty("article_id")).toBe(true);
+          expect(article.hasOwnProperty("topic")).toBe(true);
+          expect(article.hasOwnProperty("created_at")).toBe(true);
+          expect(article.hasOwnProperty("votes")).toBe(true);
+          expect(article.hasOwnProperty("article_img_url")).toBe(true);
+          expect(article.hasOwnProperty("comment_count")).toBe(true);
+        });
+      });
+  });
+});
