@@ -1,7 +1,10 @@
 const express = require("express");
 const { getTopics } = require("./controllers/topics.controllers");
 const { getApi } = require("./controllers/general.controllers");
-const { getArticlebyId } = require("./controllers/articles.controllers");
+const {
+  getArticlebyId,
+  getArticles,
+} = require("./controllers/articles.controllers");
 
 const app = express();
 
@@ -11,6 +14,7 @@ app.get("/api", getApi);
 
 app.get("/api/articles/:article_id", getArticlebyId);
 
+app.get("/api/articles", getArticles);
 
 const handlePsqlErrors = (err, req, res, next) => {
   if (err.code === "22P02") {
