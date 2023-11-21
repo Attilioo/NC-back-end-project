@@ -51,11 +51,11 @@ describe("Test /api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then(({ body }) => {
-        expect(body[0].article_id).toBe(1);
-        expect(body[0].title).toBe("Living in the shadow of a great man");
-        expect(body[0].topic).toBe("mitch");
-        expect(body[0].author).toBe("butter_bridge");
-        expect(body[0].votes).toBe(100);
+        expect(body.article_id).toBe(1);
+        expect(body.title).toBe("Living in the shadow of a great man");
+        expect(body.topic).toBe("mitch");
+        expect(body.author).toBe("butter_bridge");
+        expect(body.votes).toBe(100);
       });
   });
   test("the method blocks SQL injections", () => {
@@ -115,14 +115,30 @@ describe("TEST /api/articles/:article_id/comments", () => {
           expect(comment.hasOwnProperty("votes")).toBe(true);
           expect(comment.hasOwnProperty("created_at")).toBe(true);
         });
-        expect(body[0].created_at > body[1].created_at).toBe(true);
+      });
+  });
+  test("GET 200: should return an array of comments in order of posting from most recent", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        let creationTime = Date.parse(body[0].created_at);
+        body.forEach((comment) => {
+          let commentDate = Date.parse(comment.created_at);
+          expect(commentDate).toBeLessThanOrEqual(creationTime);
+
+          creationTime = commentDate;
+        });
       });
   });
 
   test("ERROR 400: should return an error when article_id is not valid", () => {
     return request(app)
       .get("/api/articles/not-a-valid-id/comments")
-      .expect(400);
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
   });
 
   test("ERROR 400: should return an error when article_id is valid but not existent", () => {
