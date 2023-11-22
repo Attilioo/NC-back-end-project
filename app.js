@@ -27,7 +27,6 @@ app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 app.post("/api/articles/:article_id/comments", postCommentByArticleId);
 
 const handlePsqlErrors = (err, req, res, next) => {
-  console.log(err.code);
   if (err.code === "22P02") {
     res.status(400).send({ msg: "Bad Request" });
   } else if (err.code === "23503") {
