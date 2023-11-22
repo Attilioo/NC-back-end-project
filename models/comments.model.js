@@ -1,3 +1,4 @@
+const { use } = require("../app");
 const db = require("../db/connection");
 
 exports.selectCommentsByArticleId = (article_id) => {
@@ -11,6 +12,22 @@ exports.selectCommentsByArticleId = (article_id) => {
         msg: "Article not existent",
       });
     }
+    return rows;
+  });
+};
+
+exports.insertCommentByArticleId = (comment, article_id) => {
+  let querystring = `INSERT INTO comments (body,article_id,author,votes) VALUES ($1,$2,$3,$4) RETURNING *`;
+  const { body, username } = comment;
+  const valuesArray = [body, article_id, username, 0];
+
+  if (typeof body !== "string") {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request",
+    });
+  }
+  return db.query(querystring, valuesArray).then(({ rows }) => {
     return rows;
   });
 };

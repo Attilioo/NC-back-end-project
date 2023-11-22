@@ -150,4 +150,52 @@ describe("TEST /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Article not existent");
       });
   });
+  test("POST 201: should post successfully the new comment", () => {
+    const testComment = {
+      body: "This is a test!",
+      username: "butter_bridge",
+    };
+
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(testComment)
+      .expect(201)
+      .then((response) => {
+        expect(response.body).toMatchObject({
+          comment_id: expect.any(Number),
+          body: expect.any(String),
+          article_id: expect.any(Number),
+          author: expect.any(String),
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+        });
+      });
+  });
+  test("ERROR 400: should return an error when the body is not a string", () => {
+    const testComment = {
+      body: 1234,
+      username: "butter_bridge",
+    };
+
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(testComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  test("ERROR 400: should return an error when the body does not exist", () => {
+    const testComment = {
+      //lack of body key
+      username: "butter_bridge",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(testComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
 });
