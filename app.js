@@ -10,6 +10,7 @@ const {
   postCommentByArticleId,
   removeCommentById,
 } = require("./controllers/comments.controller");
+const { getUsers } = require("./controllers/users.controllers");
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 app.post("/api/articles/:article_id/comments", postCommentByArticleId);
 
 app.delete("/api/comments/:comment_id", removeCommentById);
+
+app.get("/api/users", getUsers);
 
 const handlePsqlErrors = (err, req, res, next) => {
   if (err.code === "22P02") {
