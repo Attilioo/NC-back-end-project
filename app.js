@@ -8,6 +8,7 @@ const {
 const {
   getCommentsByArticleId,
   postCommentByArticleId,
+  removeCommentById,
 } = require("./controllers/comments.controller");
 
 const app = express();
@@ -25,6 +26,8 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
 app.post("/api/articles/:article_id/comments", postCommentByArticleId);
+
+app.delete("/api/comments/:comment_id", removeCommentById);
 
 const handlePsqlErrors = (err, req, res, next) => {
   if (err.code === "22P02") {
