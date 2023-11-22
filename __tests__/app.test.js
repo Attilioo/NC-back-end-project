@@ -62,7 +62,7 @@ describe("Test /api/articles/:article_id", () => {
     return request(app).get("/api/articles/1; DROP DATABASE").expect(400);
   });
 
-  test("GET 400: returns an error when the id does not match", () => {
+  test("ERROR 400: returns an error when the id does not match", () => {
     return request(app)
       .get("/api/articles/90")
       .expect(400)
@@ -99,7 +99,26 @@ describe("Test /api/articles/:article_id", () => {
         expect(body[0].votes === -900).toBe(true);
       });
   });
-  
+  test("ERROR 400: Throws an error when article_id does not exist", () => {
+    const testVotes = { inc_votes: -1000 };
+    return request(app)
+      .patch("/api/articles/10000")
+      .send(testVotes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  test("ERROR 400: Throws an error when the object sent does not have any keys", () => {
+    const testVotes = {};
+    return request(app)
+      .patch("/api/articles/10000")
+      .send(testVotes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
 });
 
 describe("TEST /api/articles", () => {

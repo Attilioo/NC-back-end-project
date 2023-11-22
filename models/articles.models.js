@@ -27,6 +27,12 @@ exports.updateArticle = (body, article_id) => {
   const valuesArray = [incomingVotes, article_id];
   const queryString = `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *`;
   return db.query(queryString, valuesArray).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({
+        status: 400,
+        msg: "Bad Request",
+      });
+    }
     return rows;
   });
 };
