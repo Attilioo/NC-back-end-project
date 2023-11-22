@@ -75,5 +75,30 @@
       "votes": 0,
       "comment_count": 6
     }
+  "GET /api/articles/:article_id/comments": {
+    "description": "returns an array of comments matching the article_id",
+    "queries": ["order"],
+    "exampleResponse": [
+      {
+        "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+        "votes": 16,
+        "author": "butter_bridge",
+        "article_id": 9,
+        "created_at": 1586179020000
+      }
+    ]
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Add a post object containing a body and a username key: { body: 'This is a test!',username: 'butter_bridge'}. Returns a comments that has just been added on an article matching the article_id with the body and username given.",
+    "queries": [],
+    "exampleResponse": [
+      {
+        "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+        "votes": 16,
+        "author": "butter_bridge",
+        "article_id": 9,
+        "created_at": 1586179020000
+      }
+    ]
   }
 }
