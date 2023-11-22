@@ -251,4 +251,12 @@ describe("TEST /api/comments/:comment_id", () => {
         expect(body.msg).toBe("Comment Not Found");
       });
   });
+  test("ERROR 404: should throw an error when id is not valid", () => {
+    return request(app)
+      .delete("/api/comments/not-a-valid-id")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
 });
