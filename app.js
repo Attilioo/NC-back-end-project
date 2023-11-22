@@ -4,10 +4,12 @@ const { getApi } = require("./controllers/general.controllers");
 const {
   getArticlebyId,
   getArticles,
+  patchArticle,
 } = require("./controllers/articles.controllers");
 const { getCommentsByArticleId } = require("./controllers/comments.controller");
 
 const app = express();
+app.use(express.json());
 
 app.get("/api/topics", getTopics);
 
@@ -18,6 +20,8 @@ app.get("/api/articles/:article_id", getArticlebyId);
 app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
+
+app.patch("/api/articles/:article_id", patchArticle);
 
 const handlePsqlErrors = (err, req, res, next) => {
   if (err.code === "22P02") {

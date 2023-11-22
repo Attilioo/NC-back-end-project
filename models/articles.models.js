@@ -21,3 +21,12 @@ exports.selectArticles = () => {
     return rows;
   });
 };
+
+exports.updateArticle = (body, article_id) => {
+  const incomingVotes = body.inc_votes;
+  const valuesArray = [incomingVotes, article_id];
+  const queryString = `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *`;
+  return db.query(queryString, valuesArray).then(({ rows }) => {
+    return rows;
+  });
+};

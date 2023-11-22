@@ -58,7 +58,7 @@ describe("Test /api/articles/:article_id", () => {
         expect(body.votes).toBe(100);
       });
   });
-  test("the method blocks SQL injections", () => {
+  test("ERROR 400:the method blocks SQL injections", () => {
     return request(app).get("/api/articles/1; DROP DATABASE").expect(400);
   });
 
@@ -70,7 +70,7 @@ describe("Test /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad Request");
       });
   });
-  test("the method blocks an invalid id", () => {
+  test("ERROR 400: the method blocks an invalid id", () => {
     return request(app)
       .get("/api/articles/an-invalid_id")
       .expect(400)
@@ -78,6 +78,28 @@ describe("Test /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad Request");
       });
   });
+  test("PATCH 202: returns the edited article", () => {
+    const testVotes = { inc_votes: 1000 };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(testVotes)
+      .expect(202)
+      .then(({ body }) => {
+        expect(body[0].votes >= 1000).toBe(true);
+      });
+  });
+  test("PATCH 202: returns the edited article when votes are downvotes", () => {
+    const testVotes = { inc_votes: -1000 };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(testVotes)
+      .expect(202)
+      .then(({ body }) => {
+        //article with article_id one starts out with 100 votes. Thus when we subtract 1000 votes we get to -900.
+        expect(body[0].votes === -900).toBe(true);
+      });
+  });
+  
 });
 
 describe("TEST /api/articles", () => {
