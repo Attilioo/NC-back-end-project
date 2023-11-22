@@ -274,8 +274,6 @@ describe("TEST /api/users", () => {
             avatar_url: expect.any(String),
           });
         });
-
-        console.log(body);
       });
   });
 });
