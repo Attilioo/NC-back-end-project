@@ -238,3 +238,17 @@ describe("TEST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("TEST /api/comments/:comment_id", () => {
+  test("DELETE 204: Returns status 204", () => {
+    return request(app).delete("/api/comments/1").expect(204);
+  });
+  test("ERROR 404: should throw an error when id does not exist", () => {
+    return request(app)
+      .delete("/api/comments/10000")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Comment Not Found");
+      });
+  });
+});

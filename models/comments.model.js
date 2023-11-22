@@ -21,13 +21,28 @@ exports.insertCommentByArticleId = (comment, article_id) => {
   const { body, username } = comment;
   const valuesArray = [body, article_id, username, 0];
 
-   if (typeof body !== "string") {
-     return Promise.reject({
-       status: 400,
-       msg: "Bad Request",
-     });
-   }
+  if (typeof body !== "string") {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request",
+    });
+  }
   return db.query(querystring, valuesArray).then(({ rows }) => {
+    return rows;
+  });
+};
+
+exports.deleteCommentById = (comment_id) => {
+  let queryString = `DELETE FROM comments WHERE comment_id = $1 RETURNING *`;
+  const valuesArray = [comment_id];
+
+  return db.query(queryString, valuesArray).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({
+        status: 404,
+        msg: "Comment Not Found",
+      });
+    }
     return rows;
   });
 };
