@@ -164,7 +164,7 @@ describe("TEST /api/articles/:article_id/comments", () => {
         expect(response.body).toMatchObject({
           comment_id: expect.any(Number),
           body: expect.any(String),
-          article_id: expect.any(Number),
+          article_id: 1,
           author: expect.any(String),
           votes: expect.any(Number),
           created_at: expect.any(String),
@@ -192,6 +192,45 @@ describe("TEST /api/articles/:article_id/comments", () => {
     };
     return request(app)
       .post("/api/articles/1/comments")
+      .send(testComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  test("ERROR 400: should return an error when the username does not exist", () => {
+    const testComment = {
+      body: "test test",
+      username: "1234",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(testComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+  test("ERROR 404: should return an error when the article_id is valid but doesnt exist", () => {
+    const testComment = {
+      body: "This is a test!",
+      username: "butter_bridge",
+    };
+    return request(app)
+      .post("/api/articles/1000/comments")
+      .send(testComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+  test("ERROR 400: should return an error when the article_id is not valid", () => {
+    const testComment = {
+      body: "This is a test!",
+      username: "butter_bridge",
+    };
+    return request(app)
+      .post("/api/articles/not-a-valid-id/comments")
       .send(testComment)
       .expect(400)
       .then(({ body }) => {

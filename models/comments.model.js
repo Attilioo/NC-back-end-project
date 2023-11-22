@@ -21,12 +21,12 @@ exports.insertCommentByArticleId = (comment, article_id) => {
   const { body, username } = comment;
   const valuesArray = [body, article_id, username, 0];
 
-  if (typeof body !== "string") {
-    return Promise.reject({
-      status: 400,
-      msg: "Bad Request",
-    });
-  }
+   if (typeof body !== "string") {
+     return Promise.reject({
+       status: 400,
+       msg: "Bad Request",
+     });
+   }
   return db.query(querystring, valuesArray).then(({ rows }) => {
     return rows;
   });
