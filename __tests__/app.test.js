@@ -163,9 +163,9 @@ describe("TEST /api/articles", () => {
   test("Should return an error when the topic doesnt exist", () => {
     return request(app)
       .get("/api/articles?topic=basketballinspace")
-      .expect(400)
+      .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad Request");
+        expect(body.msg).toBe("Topic does not exist");
       });
   });
 });
