@@ -16,11 +16,14 @@ exports.getArticlebyId = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  const { body } = req;
-  const { article_id } = req.params;
-  return selectArticles(body, article_id).then((articlesArray) => {
-    return res.status(200).send(articlesArray);
-  });
+  const { topic } = req.query;
+  return selectArticles(topic)
+    .then((articlesArray) => {
+      return res.status(200).send(articlesArray);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.patchArticle = (req, res, next) => {

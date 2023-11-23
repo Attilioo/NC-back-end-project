@@ -14,14 +14,27 @@ exports.selectArticleById = (article_id) => {
   });
 };
 
-exports.selectArticles = () => {
-  let queryString =
-    "SELECT articles.author,articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY created_at DESC;";
-  return db.query(queryString).then(({ rows }) => {
-    return rows;
-  });
-};
-
+exports.selectArticles = (topic) => {
+if (!topic) {
+     let queryString =
+     "SELECT articles.author,articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY created_at DESC;";
+     return db.query(queryString).then(({ rows }) => {
+       return rows;
+     });
+   } else {
+    let queryString =
+      "SELECT articles.author,articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles  LEFT JOIN comments ON articles.article_id = comments.article_id WHERE topic = $1 GROUP BY articles.article_id  ORDER BY created_at DESC;";
+    return db.query(queryString, [topic]).then(({ rows }) => {
+      if (rows.length === 0) {
+        throw {
+          status: 400,
+          msg: "Bad Request",
+        };
+      }
+      return rows;
+    });
+  }
+ };
 exports.updateArticle = (body, article_id) => {
   const incomingVotes = body.inc_votes;
   const valuesArray = [incomingVotes, article_id];
