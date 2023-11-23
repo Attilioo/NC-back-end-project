@@ -45,7 +45,7 @@ describe("TEST /api", () => {
   });
 });
 
-describe.only("Test /api/articles/:article_id", () => {
+describe("Test /api/articles/:article_id", () => {
   test("GET 200: returns the article chosen", () => {
     return request(app)
       .get("/api/articles/1")

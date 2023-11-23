@@ -28,9 +28,7 @@ exports.selectArticleById = (article_id) => {
 };
 
 exports.selectArticles = (topic) => {
-  console.log(topic);
   const checkTopicQuery = "SELECT * FROM topics WHERE slug = $1";
-
   return db
     .query(checkTopicQuery, [topic])
     .then(({ rows }) => {
