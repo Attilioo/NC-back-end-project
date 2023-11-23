@@ -45,7 +45,7 @@ describe("TEST /api", () => {
   });
 });
 
-describe("Test /api/articles/:article_id", () => {
+describe.only("Test /api/articles/:article_id", () => {
   test("GET 200: returns the article chosen", () => {
     return request(app)
       .get("/api/articles/1")
@@ -56,6 +56,9 @@ describe("Test /api/articles/:article_id", () => {
         expect(body.topic).toBe("mitch");
         expect(body.author).toBe("butter_bridge");
         expect(body.votes).toBe(100);
+        expect(body).toMatchObject({
+          comment_count: expect.any(String),
+        });
       });
   });
   test("ERROR 400:the method blocks SQL injections", () => {

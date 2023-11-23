@@ -2,7 +2,20 @@ const { response } = require("../app");
 const db = require("../db/connection");
 
 exports.selectArticleById = (article_id) => {
-  let queryString = "SELECT * FROM articles WHERE article_id=$1";
+  let queryString = `
+  SELECT 
+    articles.*, 
+    COUNT(comments.comment_id) AS comment_count
+  FROM 
+    articles
+  LEFT JOIN 
+    comments ON articles.article_id = comments.article_id
+  WHERE 
+    articles.article_id = $1
+  GROUP BY 
+    articles.article_id
+`;
+
   return db.query(queryString, [article_id]).then(({ rows }) => {
     if (rows.length === 0) {
       return Promise.reject({
@@ -21,7 +34,7 @@ exports.selectArticles = (topic) => {
   return db
     .query(checkTopicQuery, [topic])
     .then(({ rows }) => {
-      if (topic && (rows.length === 0)) {
+      if (topic && rows.length === 0) {
         return Promise.reject({
           status: 404,
           msg: "Topic does not exist",
