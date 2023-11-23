@@ -301,3 +301,20 @@ describe("TEST /api/comments/:comment_id", () => {
       });
   });
 });
+
+describe("TEST /api/users", () => {
+  test("GET 200: returns an array of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        body.forEach((user) => {
+          expect(user).toMatchObject({
+            username: expect.any(String),
+            name: expect.any(String),
+            avatar_url: expect.any(String),
+          });
+        });
+      });
+  });
+});

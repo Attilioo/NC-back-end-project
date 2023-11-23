@@ -45,9 +45,13 @@
   "GET /api/users": {
     "description": "Gives an array of all users in the db",
     "queries": ["username", "name", "order"],
-    "exampleResponse": {
-      "topics": [{ "slug": "football", "description": "Footie!" }]
-    }
+    "exampleResponse": [
+      {
+        "username": "butter_bridge",
+        "name": "jonny",
+        "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+      }
+    ]
   },
   "GET /api/articles/:article_id": {
     "description": "returns the article with matching id",
