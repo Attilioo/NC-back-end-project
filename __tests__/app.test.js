@@ -61,6 +61,16 @@ describe("Test /api/articles/:article_id", () => {
         });
       });
   });
+  test("GET 200: returns the article with a comment_count key", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          comment_count: expect.any(String),
+        });
+      });
+  });
   test("ERROR 400:the method blocks SQL injections", () => {
     return request(app).get("/api/articles/1; DROP DATABASE").expect(400);
   });
