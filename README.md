@@ -17,7 +17,7 @@ In this process I mimic a real-world like Backend (such as Reddit):
 
 To run this project please fork it and clone it.
 
-You're gonna need to install a few packages to make it work
+You're going to need to install a few packages to make it work
 
 1) Install Node_modules (Min version: v21.1.0)
 ```bash
@@ -37,7 +37,7 @@ You're gonna need to install a few packages to make it work
     npm run seed
 ```
 # ENV files 
-In order to access the databases you're gonna need to create 2 '.env' files and install [dotenv](https://www.npmjs.com/package/dotenv)
+In order to access the databases you're going to need to create 2 '.env' files and install [dotenv](https://www.npmjs.com/package/dotenv)
 
 
 - '.env.test' with this text inside
