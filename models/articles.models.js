@@ -25,12 +25,18 @@ exports.selectArticles = () => {
 exports.updateArticle = (body, article_id) => {
   const incomingVotes = body.inc_votes;
   const valuesArray = [incomingVotes, article_id];
+  if (!incomingVotes) {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request",
+    });
+  }
   const queryString = `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *`;
   return db.query(queryString, valuesArray).then(({ rows }) => {
     if (rows.length === 0) {
       return Promise.reject({
-        status: 400,
-        msg: "Bad Request",
+        status: 404,
+        msg: "Not found",
       });
     }
     return rows;

@@ -78,35 +78,35 @@ describe("Test /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad Request");
       });
   });
-  test("PATCH 202: returns the edited article", () => {
+  test("PATCH 200: returns the edited article", () => {
     const testVotes = { inc_votes: 1000 };
     return request(app)
       .patch("/api/articles/1")
       .send(testVotes)
-      .expect(202)
+      .expect(200)
       .then(({ body }) => {
         expect(body[0].votes >= 1000).toBe(true);
       });
   });
-  test("PATCH 202: returns the edited article when votes are downvotes", () => {
+  test("PATCH 200: returns the edited article when votes are downvotes", () => {
     const testVotes = { inc_votes: -1000 };
     return request(app)
       .patch("/api/articles/1")
       .send(testVotes)
-      .expect(202)
+      .expect(200)
       .then(({ body }) => {
         //article with article_id one starts out with 100 votes. Thus when we subtract 1000 votes we get to -900.
         expect(body[0].votes === -900).toBe(true);
       });
   });
-  test("ERROR 400: Throws an error when article_id does not exist", () => {
+  test("ERROR 404: Throws an error when article_id does not exist", () => {
     const testVotes = { inc_votes: -1000 };
     return request(app)
       .patch("/api/articles/10000")
       .send(testVotes)
-      .expect(400)
+      .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad Request");
+        expect(body.msg).toBe("Not found");
       });
   });
   test("ERROR 400: Throws an error when the object sent does not have any keys", () => {
