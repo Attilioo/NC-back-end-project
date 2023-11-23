@@ -141,6 +141,33 @@ describe("TEST /api/articles", () => {
         });
       });
   });
+  test("Should accept a topic query and respond with the appropriate filtered articles", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch")
+      .expect(200)
+      .then(({ body }) => {
+        body.forEach((article) => {
+          expect(article).toMatchObject({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: expect.any(Number),
+            topic: "mitch",
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(String),
+          });
+        });
+      });
+  });
+  test("Should return an error when the topic doesnt exist", () => {
+    return request(app)
+      .get("/api/articles?topic=basketballinspace")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Topic does not exist");
+      });
+  });
 });
 
 describe("TEST /api/articles/:article_id/comments", () => {
