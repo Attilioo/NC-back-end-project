@@ -8,7 +8,7 @@ exports.selectArticleById = (article_id) => {
     COUNT(comments.comment_id) AS comment_count
   FROM 
     articles
-  LEFT JOIN 
+  JOIN 
     comments ON articles.article_id = comments.article_id
   WHERE 
     articles.article_id = $1
