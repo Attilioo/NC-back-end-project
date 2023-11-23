@@ -21,7 +21,6 @@ exports.selectArticles = (topic) => {
   return db
     .query(checkTopicQuery, [topic])
     .then(({ rows }) => {
-      console.log(rows);
       if (topic && (rows.length === 0)) {
         return Promise.reject({
           status: 404,
