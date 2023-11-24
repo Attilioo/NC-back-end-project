@@ -374,4 +374,35 @@ describe("TEST /api/users", () => {
         });
       });
   });
+  test("GET 200: Returns one single user specified by its username", () => {
+    return request(app)
+      .get("/api/users/butter_bridge")
+      .expect(200)
+      .then(({ body }) => {
+        body.forEach((user) => {
+          expect(user).toMatchObject({
+            username: "butter_bridge",
+            name: expect.any(String),
+            avatar_url: expect.any(String),
+          });
+        });
+      });
+  });
+  test("ERROR 404: Returns an error when the user does not exist", () => {
+    return request(app)
+      .get("/api/users/supermariobrotherluigi")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("User does not exist");
+      });
+  });
+
+  test("ERROR 400: Prevents an SQL injection", () => {
+    return request(app)
+      .get("/api/users/butter_bridge; DROP DATABASE")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
 });
