@@ -27,7 +27,7 @@ exports.selectArticleById = (article_id) => {
   });
 };
 
-exports.selectArticles = (topic) => {
+exports.selectArticles = (topic, sort_by = "created_at", order = "DESC") => {
   const checkTopicQuery = "SELECT * FROM topics WHERE slug = $1";
   return db
     .query(checkTopicQuery, [topic])
@@ -38,7 +38,12 @@ exports.selectArticles = (topic) => {
           msg: "Topic does not exist",
         });
       }
-
+      if (order !== "ASC" && order !== "DESC") {
+        return Promise.reject({
+          status: 400,
+          msg: "Wrong Input",
+        });
+      }
       const topicArray = [];
       let queryString =
         "SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id";
@@ -48,7 +53,7 @@ exports.selectArticles = (topic) => {
         topicArray.push(topic);
       }
 
-      queryString += " GROUP BY articles.article_id ORDER BY created_at DESC;";
+      queryString += ` GROUP BY articles.article_id ORDER BY ${sort_by} ${order}`;
 
       return db.query(queryString, topicArray);
     })

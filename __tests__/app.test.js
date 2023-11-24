@@ -132,7 +132,7 @@ describe("Test /api/articles/:article_id", () => {
 });
 
 describe("TEST /api/articles", () => {
-  test("GET 200 Should return an array of articles", () => {
+  test("GET 200:Should return an array of articles", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -151,7 +151,7 @@ describe("TEST /api/articles", () => {
         });
       });
   });
-  test("Should accept a topic query and respond with the appropriate filtered articles", () => {
+  test("ERROR 404: Should accept a topic query and respond with the appropriate filtered articles", () => {
     return request(app)
       .get("/api/articles?topic=mitch")
       .expect(200)
@@ -170,12 +170,32 @@ describe("TEST /api/articles", () => {
         });
       });
   });
-  test("Should return an error when the topic doesnt exist", () => {
+  test("ERROR 404: Should return an error when the topic doesnt exist", () => {
     return request(app)
       .get("/api/articles?topic=basketballinspace")
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Topic does not exist");
+      });
+  });
+  test("GET 200: Should return an array of articles sorted by articleId ASC", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch&sort_by=article_id&order=ASC")
+      .expect(200)
+      .then(({ body }) => {
+        for (let i = 0; i < body.length - 1; i++) {
+          expect(body[i].article_id).toBeLessThanOrEqual(
+            body[i + 1].article_id
+          );
+        }
+      });
+  });
+  test("ERROR 404: Should return an error when ORDER is not ASC or DESC", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch&sort_by=article_id&order=BAZINGA")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Wrong Input");
       });
   });
 });
