@@ -46,7 +46,7 @@ exports.selectArticles = (topic, sort_by = "created_at", order = "DESC") => {
       }
       const topicArray = [];
       let queryString =
-        "SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id";
+        "SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COALESCE(COUNT(comments.comment_id),0) AS comment_count FROM articles RIGHT JOIN comments ON articles.article_id = comments.article_id";
 
       if (topic) {
         queryString += " WHERE topic = $1";
